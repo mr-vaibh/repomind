@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="flex items-center justify-center h-screen bg-gray-100">
+    <div class="bg-white p-6 rounded-lg shadow-md w-96">
+        <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
+        <form id="loginForm">
+            <input type="text" id="username" class="w-full p-2 border rounded mb-3" placeholder="Username">
+            <input type="password" id="password" class="w-full p-2 border rounded mb-3" placeholder="Password">
+            <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded">Login</button>
+        </form>
+        <p class="text-center mt-3 text-sm">
+            Don't have an account? <a href="register.html" class="text-blue-500">Register</a>
+        </p>
+    </div>
+    <script>
+        $("#loginForm").submit(function(event) {
+            event.preventDefault();
+            $.post("/api/login", {
+                username: $("#username").val(),
+                password: $("#password").val()
+            }).done(function(response) {
+                if (response.success) {
+                    window.location.href = "dashboard.html";
+                } else {
+                    alert("Login failed");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

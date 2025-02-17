@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepoMind</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-gray-800 hover:text-gray-600 transition">RepoMind</a>
+            <div class="flex items-center space-x-4">
+                <button id="open-modal" class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition">Add API Key</button>
+                <img src="https://via.placeholder.com/40" alt="Profile" class="rounded-full w-10 h-10 border-2 border-gray-300">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Table Container -->
+    <div class="container mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold mb-4">GitHub API Keys</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+                <thead class="bg-gray-200 text-gray-700">
+                    <tr>
+                        <th class="py-3 px-4 text-left">GitHub Account</th>
+                        <th class="py-3 px-4 text-left">API Key</th>
+                        <th class="py-3 px-4 text-left">Added On</th>
+                        <th class="py-3 px-4 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="api-keys-list" class="bg-white text-gray-800">
+                    <!-- Data will be populated dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add API Key Modal -->
+    <div id="modal" class="fixed inset-0 bg-gray-800 bg-opacity-50 hidden flex justify-center items-center">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h2 class="text-xl font-semibold mb-4">Add GitHub API Key</h2>
+            <form id="add-api-key-form">
+                {% csrf_token %}
+                <input type="text" id="github-username" placeholder="GitHub Username" class="w-full p-2 border border-gray-300 rounded-md mb-2" required>
+                <input type="text" id="github-api-key" placeholder="API Key" class="w-full p-2 border border-gray-300 rounded-md mb-4" required>
+                <div class="flex justify-end space-x-2">
+                    <button type="button" id="close-modal" class="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- jQuery AJAX Script -->
+    <script src="{% static 'github_integration/home.js' %}"></script>
+
+</body>
+</html>
