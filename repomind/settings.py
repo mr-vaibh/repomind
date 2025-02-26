@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'repomind.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'repomind',
+        'NAME': 'repogpt',
         'USER': 'root',
         'PASSWORD': 'root321',
         'HOST': '127.0.0.1',
