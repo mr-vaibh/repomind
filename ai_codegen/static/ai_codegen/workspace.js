@@ -2,7 +2,6 @@ $(document).ready(function () {
     const username = window.location.pathname.split("/")[2];
     const repoName = window.location.pathname.split("/")[3];
     const apiUrl = `/workspace/${username}/${repoName}/view/`;
-    let activeFile = null;
 
     $.get(apiUrl, function (data) {
         if (data.error) {
@@ -23,18 +22,29 @@ $(document).ready(function () {
         });
 
         $('#folder-tree').on("select_node.jstree", function (e, data) {
-            let selectedPath = data.node.original.path;
-            activeFile = selectedPath; // Store active file
-
-            // Fetch file content and start AI session
-            $.get(`/workspace/get-file/?path=${selectedPath}`, function (response) {
-                if (response.success) {
-                    startGeminiSession(selectedPath, response.content);
+            let selectedNode = data.node;
+        
+            if (selectedNode.children.length > 0) {
+                // It's a folder: check if it's open, then toggle accordingly
+                if ($('#folder-tree').jstree("is_open", selectedNode)) {
+                    $('#folder-tree').jstree("close_node", selectedNode);
                 } else {
-                    alert("Error: Could not load file content.");
+                    $('#folder-tree').jstree("open_node", selectedNode);
                 }
-            });
+            } else {
+                // It's a file: fetch content
+                let selectedPath = selectedNode.original.path;
+        
+                $.get(`/workspace/get-file/?username=${username}&repo=${repoName}&path=${selectedPath}`, function (response) {
+                    if (response.success) {
+                        startGeminiSession(selectedPath, response.content);
+                    } else {
+                        alert("Error: Could not load file content.");
+                    }
+                });
+            }
         });
+
     }).fail(function () {
         alert("Failed to load repository structure.");
     });
