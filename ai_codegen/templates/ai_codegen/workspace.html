@@ -24,9 +24,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
-
-    
-
     <div class="flex h-screen">
         <!-- Sidebar (Folder Structure) -->
         <div class="w-1/4 bg-white p-4 shadow-lg">
@@ -39,7 +36,7 @@
             <h2 class="text-2xl font-semibold mb-4">AI Code Assistant</h2>
 
             <!-- Chatbox -->
-            <div id="chatbox" class="flex-1 p-4 bg-white shadow rounded overflow-y-auto">
+            <div id="chatbox" class="flex-1 p-4 bg-white text-sm shadow rounded overflow-y-auto">
                 <p class="text-gray-400 text-center">Start a conversation...</p>
             </div>
 
@@ -56,6 +53,5 @@
 
     <script src="{% static 'ai_codegen/workspace.js' %}"></script>
     <script src="{% static 'ai_codegen/workspace-chat.js' %}"></script>
-
 </body>
 </html>
