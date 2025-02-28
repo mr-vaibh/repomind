@@ -7,24 +7,34 @@
     <title>Select Repository</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css">
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-gray-50 text-gray-900 font-sans">
 
-    <nav class="bg-white shadow-md">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="/" class="text-2xl font-bold text-gray-800 hover:text-gray-600 transition">RepoMind</a>
-            <span class="text-gray-600">Select a Repository</span>
-        </div>
-    </nav>
+    {% include "github_integration/navbar.html" %}
 
-    <div class="container mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
-        <h2 class="text-2xl font-semibold mb-4">Your GitHub Repositories</h2>
-        <div id="repo-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Repos will be dynamically added here -->
+    <!-- Repositories Section -->
+    <div class="container mx-auto mt-12 p-8 bg-white rounded-xl shadow-lg">
+        <h2 class="text-3xl font-semibold text-gray-800 mb-6">
+            <a href="javascript:history.back()" class="text-gray-600 hover:text-gray-800 mr-4">
+                <i class="fas fa-arrow-left fa-lg"></i>
+            </a>
+            Your GitHub Repositories
+        </h2>
+
+        <!-- Search Bar -->
+        <input type="text" id="repo-search" class="w-full p-3 border border-gray-300 rounded-lg mb-6 text-lg" placeholder="Search repositories by name...">
+
+        <!-- Grid for Repositories -->
+        <div id="repo-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Repositories will be dynamically added here -->
         </div>
     </div>
 
-    <script src="{% static "github_integration/repositories.js" %}"></script>
+    <script src="{% static 'github_integration/repositories.js' %}"></script>
 
 </body>
 </html>

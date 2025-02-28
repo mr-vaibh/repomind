@@ -3,6 +3,8 @@
 const username = window.location.pathname.split("/")[2];
 const repoName = window.location.pathname.split("/")[3];
 
+$("#repo-name").text(repoName);
+
 function appendMessage(sender, message) {
     const messageClass = sender === "You" ? "bg-blue-100" : "bg-green-100";
     const formattedMessage = formatMessage(message);

@@ -5,67 +5,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RepoMind - Repository</title>
+
+    <!-- jQuery, TailwindCSS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- FontAwesome for icons -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- jstree CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.17/jstree.min.js" integrity="sha512-Rzhxh2sskKwa+96nRopp/hvGexBzEPG6mnFI6uRy059FZfksJJFYmqDFn050KUDhivXLsT6SvoaEf5iSp2SHjg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Prism CSS (for colorizing code syntax) -->
+    <!-- JSTree -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.17/jstree.min.js"></script>
+
+    <!-- Prism -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 
-    <!-- Notiflix CSS & JS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notiflix/dist/notiflix-3.2.6.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/notiflix/dist/notiflix-3.2.6.min.js"></script>
+    <!-- Notiflix -->
+    <script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.8/dist/notiflix-aio-3.2.8.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notiflix@3.2.8/src/notiflix.min.css">
 </head>
 <body class="bg-gray-100 text-gray-800">
+
     <div class="flex h-screen">
         <!-- Sidebar (Folder Structure) -->
-        <div class="w-1/4 bg-white p-4 shadow-lg">
-            <h2 class="text-xl font-bold mb-4">Repository Files</h2>
-            <div id="folder-tree"></div>
+        <div class="w-1/4 repo-sidebar bg-white p-6 shadow-lg">
+            <div class="flex items-center mb-6">
+                <!-- Back Button -->
+                <a href="javascript:history.back()" class="text-gray-600 hover:text-gray-800 mr-4">
+                    <i class="fas fa-arrow-left fa-lg"></i>
+                </a>
+                <h2 class="text-xl font-bold" id="repo-name">Repository Files</h2>
+            </div>
+            <!-- Folder Tree -->
+            <div id="folder-tree" class="overflow-y-auto h-[calc(100vh-150px)]">
+                <!-- Dynamic folder structure will be injected here -->
+            </div>
         </div>
 
         <!-- Main Content (Chat Section) -->
-        <div class="flex-1 flex flex-col p-6">
-            <h2 class="text-2xl font-semibold mb-4 flex justify-between items-center">
-                <span id="file-name-heading">heading</span>
+        <div class="flex-1 p-6 flex flex-col bg-white shadow-xl">
+            <h2 class="text-2xl font-semibold mb-6 flex justify-between items-center">
+                <span id="file-name-heading">File: README.md</span>
                 <div id="chat-btns" class="flex hidden">
-                    <button id="learn-btn" class="px-3 py-1 bg-green-500 text-white rounded shadow hover:bg-green-600 transition">
+                    <button id="learn-btn" class="text-md px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-600 transition">
                         Learn
                     </button>
-                    <button id="clear-btn" class="ml-2 px-3 py-1 bg-red-500 text-white rounded shadow hover:bg-red-600 transition">
+                    <button id="clear-btn" class="ml-2 px-4 py-2 bg-red-700 text-white rounded shadow hover:bg-red-700 transition">
                         Clear
                     </button>
                 </div>
             </h2>
 
             <!-- Chatbox -->
-            <div id="chatbox" class="flex-1 p-4 bg-white text-sm shadow rounded overflow-y-auto">
+            <div id="chatbox" class="flex-1 p-4 bg-white shadow rounded-lg overflow-y-auto">
                 <p class="text-gray-400 text-center">Start a conversation...</p>
             </div>
 
             <!-- Input and Submit Button -->
             <div class="mt-4 flex">
                 <input id="chat-input" type="text" placeholder="Ask AI something..." 
-                    class="flex-1 p-2 border border-gray-300 rounded">
-                <button id="send-btn" class="ml-2 px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600 transition">
+                    class="flex-1 p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                <button id="send-btn" class="ml-3 px-5 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition">
                     Send
                 </button>
             </div>
         </div>
     </div>
 
+    <!-- JavaScript Files -->
     <script src="{% static 'ai_codegen/workspace-common.js' %}"></script>
     <script src="{% static 'ai_codegen/workspace.js' %}"></script>
     <script src="{% static 'ai_codegen/workspace-chat.js' %}"></script>
+
 </body>
 </html>

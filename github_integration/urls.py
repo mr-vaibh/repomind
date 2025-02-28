@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import home, github_keys, edit_key, delete_key, get_keys, add_key, delete_key, get_repositories, repositories_view
 
+app_name = "github_integration"
 urlpatterns = [
     path('', home, name='home'),
 
