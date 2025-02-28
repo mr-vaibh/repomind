@@ -36,3 +36,17 @@ function formatMessage(message) {
 function escapeHtml(str) {
     return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
+
+function setCurrentFilePath(filePath) {
+    const isFileSelected = filePath !== null;
+    localStorage.setItem("CURRENT_FILE_PATH", isFileSelected ? filePath : null);
+    
+    $("#file-name-heading").text(isFileSelected ? `./${filePath}` : "Welcome to RepoMind");
+    $("#chat-input").prop("disabled", !isFileSelected).attr("placeholder", isFileSelected ? "Ask AI something..." : "Select a file to start...");
+    $("#send-btn").prop("disabled", !isFileSelected);
+    $("#chat-btns").toggleClass("hidden", !isFileSelected); // great logic ⭐, only toggles the class if isFileSelected is false
+}
+
+function getCurrentFilePath() {
+    return localStorage.getItem("CURRENT_FILE_PATH");
+}

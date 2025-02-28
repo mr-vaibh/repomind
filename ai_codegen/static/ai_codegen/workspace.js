@@ -5,7 +5,7 @@ $(document).ready(function () {
     let currentSessionId = null; // Track the current session
 
     // Clear last opened file on page load
-    localStorage.setItem("CURRENT_FILE_PATH", null);
+    setCurrentFilePath(null);
 
     // Initialize repository structure
     $.get(`/workspace/${username}/${repoName}/view/`)
@@ -34,7 +34,7 @@ $(document).ready(function () {
         };
 
         data.tree = sortNodes(data.tree).map(recursiveSort);
-        
+
         folderTree.jstree({
             core: { data: data.tree, themes: { dots: false, icons: true } },
             types: { default: { icon: 'jstree-file' }, folder: { icon: 'jstree-folder' } },
@@ -58,7 +58,7 @@ $(document).ready(function () {
         // **End previous session before loading new file**
         if (currentSessionId) endCurrentSession();
 
-        $.get(`/workspace/get-file/?username=${username}&repo=${repoName}&path=${filePath}`)
+        $.get(`/workspace/get-raw-file-content/?username=${username}&repo=${repoName}&path=${filePath}`)
             .done(response => {
                 if (!response.success) return alert("Error: Could not load file content.");
 
@@ -77,7 +77,8 @@ $(document).ready(function () {
                     });
 
                 // Store last active file
-                localStorage.setItem("CURRENT_FILE_PATH", filePath);
+                setCurrentFilePath(filePath);
+
                 $.post("/workspace/set-last-active-file/", { file_path: filePath });
             })
             .fail(() => alert("Error: Could not load file content."));
@@ -123,6 +124,48 @@ $(document).ready(function () {
         chatbox.empty();
         conversation.forEach(msg => appendMessage(msg.sender, msg.message));
     }
+
+    $("#learn-btn").click(function () {
+        let currentFile = getCurrentFilePath();
+        if (currentFile) {
+            loadFileSession(currentFile, true); // Re-analyze the file
+        } else {
+            Notiflix.Notify.failure("No file selected.");
+        }
+    });
+
+    $("#clear-btn").click(function () {
+        let currentFile = getCurrentFilePath();
+
+        if (!currentFile) {
+            Notiflix.Notify.failure("No file selected.");
+            return;
+        }
+
+        Notiflix.Confirm.show(
+            "Clear Chat",
+            "Are you sure you want to delete this chat history?",
+            "Yes, Clear",
+            "Cancel",
+            function () {
+                // Send a request to delete chat history from the database
+                $.post("/workspace/clear-chat-history/", {
+                    username: username,
+                    repo_name: repoName,
+                    file_path: currentFile
+                })
+                    .done(response => {
+                        if (response.success) {
+                            $("#chatbox").empty().append(`<p class="text-gray-400 text-center">Start a conversation...</p>`);
+                            location.reload(); // Refresh page to reset state
+                        } else {
+                            Notiflix.Notify.failure("Failed to clear chat history.");
+                        }
+                    })
+                    .fail(() => Notiflix.Notify.failure("Error: Could not delete chat history."));
+            }
+        );
+    });
 
     // **End session when the page is unloaded**
     $(window).on("beforeunload", function () {

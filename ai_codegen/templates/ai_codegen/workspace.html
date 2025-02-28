@@ -36,7 +36,17 @@
 
         <!-- Main Content (Chat Section) -->
         <div class="flex-1 flex flex-col p-6">
-            <h2 class="text-2xl font-semibold mb-4">AI Code Assistant</h2>
+            <h2 class="text-2xl font-semibold mb-4 flex justify-between items-center">
+                <span id="file-name-heading">heading</span>
+                <div id="chat-btns" class="flex hidden">
+                    <button id="learn-btn" class="px-3 py-1 bg-green-500 text-white rounded shadow hover:bg-green-600 transition">
+                        Learn
+                    </button>
+                    <button id="clear-btn" class="ml-2 px-3 py-1 bg-red-500 text-white rounded shadow hover:bg-red-600 transition">
+                        Clear
+                    </button>
+                </div>
+            </h2>            
 
             <!-- Chatbox -->
             <div id="chatbox" class="flex-1 p-4 bg-white text-sm shadow rounded overflow-y-auto">

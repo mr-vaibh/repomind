@@ -122,6 +122,26 @@ def get_file_chat_history(request):
 
     return JsonResponse({"success": True, "conversation": conversation})
 
+@csrf_exempt
+def clear_chat_history(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        repo_name = request.POST.get("repo_name")
+        file_path = request.POST.get("file_path")
+
+        if not username or not repo_name or not file_path:
+            return JsonResponse({"success": False, "error": "Invalid parameters."})
+
+        # Delete the chat history entry
+        deleted, _ = FileChat.objects.filter(
+            username=username, repo_name=repo_name, file_path=file_path
+        ).delete()
+
+        if deleted:
+            return JsonResponse({"success": True})
+        return JsonResponse({"success": False, "error": "No chat history found for this file."})
+
+    return JsonResponse({"success": False, "error": "Invalid request method."})
 
 @csrf_exempt
 def set_last_active_file(request):
@@ -132,7 +152,6 @@ def set_last_active_file(request):
         return JsonResponse({"success": True})
 
     return JsonResponse({"success": False, "error": "Invalid file path."})
-
 
 def get_last_active_file(request):
     """Retrieve the last active file from the user's session."""

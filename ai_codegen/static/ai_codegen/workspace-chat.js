@@ -1,7 +1,6 @@
 // workspace-chat.js
 
 $(document).ready(function () {
-    const chatbox = $("#chatbox");
     const chatInput = $("#chat-input");
     const sendBtn = $("#send-btn");
 
