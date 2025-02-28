@@ -6,7 +6,7 @@ $(document).ready(function () {
 
     // Clear last opened file on page load
     localStorage.setItem("CURRENT_FILE_PATH", null);
-    
+
     // Initialize repository structure
     $.get(`/workspace/${username}/${repoName}/view/`)
         .done(initFileTree)
@@ -41,11 +41,11 @@ $(document).ready(function () {
         $.get(`/workspace/get-file/?username=${username}&repo=${repoName}&path=${filePath}`)
             .done(response => {
                 if (!response.success) return alert("Error: Could not load file content.");
-                
+
                 let fileContent = response.content;
 
                 // Now load chat history
-                $.get(`/workspace/get-file-chat/?repo=${repoName}&path=${filePath}`)
+                $.get(`/workspace/get-file-chat-history/?repo=${repoName}&path=${filePath}`)
                     .done(chatResponse => {
                         let chatHistory = chatResponse.success ? chatResponse.conversation : [];
                         loadChatHistory(chatHistory);
@@ -73,7 +73,7 @@ $(document).ready(function () {
         $.post("/workspace/start-gemini-session/", { username, repoName, filePath, fileContent })
             .done(response => {
                 if (!response.success) return alert("Error starting AI session: " + response.error);
-                
+
                 currentSessionId = response.session_id; // Store session ID
 
                 // Only show AI message if no previous chat exists
