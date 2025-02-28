@@ -1,7 +1,10 @@
-import requests
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from google import genai
+import requests
+
 from ai_codegen.models import FileChat
+
 from repomind.settings import GEMINI_API_KEY
 
 # Create an instance of the Gemini client

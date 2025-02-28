@@ -15,6 +15,26 @@ $(document).ready(function () {
     function initFileTree(data) {
         if (data.error) return alert("Error: " + data.error);
 
+        // Sort nodes in the folder structure - folders first, then files alphabetically
+        // Code below is a speghetti mess, but it works
+        // For reference - https://stackoverflow.com/questions/41061535/jstree-how-to-sort-jstree-nodes-with-folders-at-the-top
+        // HAIL CHATGPT
+        const sortNodes = (nodes) => nodes.sort((a, b) => {
+            const aIsFolder = a.type === "folder";
+            const bIsFolder = b.type === "folder";
+
+            if (aIsFolder && !bIsFolder) return -1; // Folders first
+            if (!aIsFolder && bIsFolder) return 1;  // Files after folders
+            return a.text.localeCompare(b.text);    // Alphabetical order
+        });
+
+        const recursiveSort = (node) => {
+            if (node.children) node.children = sortNodes(node.children).map(recursiveSort);
+            return node;
+        };
+
+        data.tree = sortNodes(data.tree).map(recursiveSort);
+        
         folderTree.jstree({
             core: { data: data.tree, themes: { dots: false, icons: true } },
             types: { default: { icon: 'jstree-file' }, folder: { icon: 'jstree-folder' } },
