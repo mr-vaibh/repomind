@@ -16,7 +16,8 @@
             <a href="#" class="text-2xl font-bold text-gray-800 hover:text-gray-600 transition">RepoMind</a>
             <div class="flex items-center space-x-4">
                 <button id="open-modal" class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition">Add API Key</button>
-                <img src="https://via.placeholder.com/40" alt="Profile" class="rounded-full w-10 h-10 border-2 border-gray-300">
+                <a href="{% url "accounts:logout" %}"><button id="logout" class="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition">Logout</button></a>
+                <img id="user-avatar" src="https://avatar.iran.liara.run/public/boy?username={{ request.user }}" alt="Profile" class="rounded-full w-10 h-10 border-2 border-gray-300">
             </div>
         </div>
     </nav>

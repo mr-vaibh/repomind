@@ -10,29 +10,23 @@
 <body class="flex items-center justify-center h-screen bg-gray-100">
     <div class="bg-white p-6 rounded-lg shadow-md w-96">
         <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
-        <form id="loginForm">
-            <input type="text" id="username" class="w-full p-2 border rounded mb-3" placeholder="Username">
-            <input type="password" id="password" class="w-full p-2 border rounded mb-3" placeholder="Password">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4">
+                <p class="text-sm font-semibold">{{ message }}</p>
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <form id="loginForm" method="post">
+            {% csrf_token %}
+            <input type="text" id="username" name="username" class="w-full p-2 border rounded mb-3" placeholder="Username">
+            <input type="password" id="password" name="password" class="w-full p-2 border rounded mb-3" placeholder="Password">
             <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded">Login</button>
         </form>
         <p class="text-center mt-3 text-sm">
-            Don't have an account? <a href="register.html" class="text-blue-500">Register</a>
+            Don't have an account? <a href="{% url "accounts:register" %}" class="text-blue-500">Register</a>
         </p>
     </div>
-    <script>
-        $("#loginForm").submit(function(event) {
-            event.preventDefault();
-            $.post("/api/login", {
-                username: $("#username").val(),
-                password: $("#password").val()
-            }).done(function(response) {
-                if (response.success) {
-                    window.location.href = "dashboard.html";
-                } else {
-                    alert("Login failed");
-                }
-            });
-        });
-    </script>
 </body>
 </html>

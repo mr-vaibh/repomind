@@ -1,3 +1,3 @@
  - highlight active file bg to skyblue
- - show file path and name in the top and a clear conversation button
+ - update the `updated_at` in FileChat
  - multiple tabs
