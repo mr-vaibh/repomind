@@ -22,6 +22,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+    <!-- Notiflix CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notiflix/dist/notiflix-3.2.6.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/notiflix/dist/notiflix-3.2.6.min.js"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
     <div class="flex h-screen">
@@ -51,6 +55,7 @@
         </div>
     </div>
 
+    <script src="{% static 'ai_codegen/workspace-common.js' %}"></script>
     <script src="{% static 'ai_codegen/workspace.js' %}"></script>
     <script src="{% static 'ai_codegen/workspace-chat.js' %}"></script>
 </body>
