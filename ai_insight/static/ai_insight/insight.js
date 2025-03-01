@@ -8,7 +8,7 @@ $(document).ready(function () {
     setCurrentFilePath(null);
 
     // Initialize repository structure
-    $.get(`/workspace/${username}/${repoName}/view/`)
+    $.get(`/insight/${username}/${repoName}/view/`)
         .done(initFileTree)
         .fail(() => alert("Failed to load repository structure."));
 
@@ -58,14 +58,14 @@ $(document).ready(function () {
         // **End previous session before loading new file**
         if (currentSessionId) endCurrentSession();
 
-        $.get(`/workspace/get-raw-file-content/?username=${username}&repo=${repoName}&path=${filePath}`)
+        $.get(`/insight/get-raw-file-content/?username=${username}&repo=${repoName}&path=${filePath}`)
             .done(response => {
                 if (!response.success) return alert("Error: Could not load file content.");
 
                 let fileContent = response.content;
 
                 // Now load chat history
-                $.get(`/workspace/get-file-chat-history/?repo=${repoName}&path=${filePath}`)
+                $.get(`/insight/get-file-chat-history/?repo=${repoName}&path=${filePath}`)
                     .done(chatResponse => {
                         let chatHistory = chatResponse.success ? chatResponse.conversation : [];
                         loadChatHistory(chatHistory);
@@ -79,7 +79,7 @@ $(document).ready(function () {
                 // Store last active file
                 setCurrentFilePath(filePath);
 
-                $.post("/workspace/set-last-active-file/", { file_path: filePath });
+                $.post("/insight/set-last-active-file/", { file_path: filePath });
             })
             .fail(() => alert("Error: Could not load file content."));
     }
@@ -91,7 +91,7 @@ $(document).ready(function () {
         // Show Notiflix loader
         Notiflix.Loading.standard("Starting AI session...");
 
-        $.post("/workspace/start-gemini-session/", { username, repoName, filePath, fileContent })
+        $.post("/insight/start-gemini-session/", { username, repoName, filePath, fileContent })
             .done(response => {
                 if (!response.success) return alert("Error starting AI session: " + response.error);
 
@@ -112,7 +112,7 @@ $(document).ready(function () {
     }
 
     function endCurrentSession() {
-        $.post("/workspace/end-gemini-session/", { session_id: currentSessionId })
+        $.post("/insight/end-gemini-session/", { session_id: currentSessionId })
             .done(() => {
                 console.log("Previous session ended.");
                 currentSessionId = null;
@@ -149,7 +149,7 @@ $(document).ready(function () {
             "Cancel",
             function () {
                 // Send a request to delete chat history from the database
-                $.post("/workspace/clear-chat-history/", {
+                $.post("/insight/clear-chat-history/", {
                     username: username,
                     repo_name: repoName,
                     file_path: currentFile

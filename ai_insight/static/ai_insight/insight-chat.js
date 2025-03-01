@@ -1,4 +1,4 @@
-// workspace-chat.js
+// insight-chat.js
 
 $(document).ready(function () {
     const chatInput = $("#chat-input");
@@ -12,7 +12,7 @@ $(document).ready(function () {
         chatInput.val("");
 
         const filePath = localStorage.getItem("CURRENT_FILE_PATH") || "";
-        $.post("/workspace/chat-with-gemini/", { filePath, username, repoName, message })
+        $.post("/insight/chat-with-gemini/", { filePath, username, repoName, message })
             .done(response => {
                 appendMessage("AI", response.success ? response.response : "Error processing your request.");
             })

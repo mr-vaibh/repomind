@@ -34,9 +34,9 @@ $(document).ready(function () {
                     <p class="text-sm text-gray-600 mt-2">${repo.description || "No description available"}</p>
                     <div class="mt-3 flex justify-between items-center">
                         <span class="text-xs text-gray-500">${new Date(repo.updated_at).toLocaleDateString()}</span>
-                        <a href="/workspace/${apiUser}/${repo.name}/" class="inline-block">
+                        <a href="/insight/${apiUser}/${repo.name}/" class="inline-block">
                             <button class="bg-blue-600 text-white px-3 py-1 rounded-lg shadow-md hover:bg-blue-700 transition">
-                                Open
+                                Insight
                             </button>
                         </a>
                     </div>

@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class AiCodegenConfig(AppConfig):
+class AiInsightConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'ai_codegen'
+    name = 'ai_insight'

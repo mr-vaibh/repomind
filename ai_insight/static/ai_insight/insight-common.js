@@ -1,4 +1,4 @@
-// workspace-common.js
+// insight-common.js
 
 const username = window.location.pathname.split("/")[2];
 const repoName = window.location.pathname.split("/")[3];

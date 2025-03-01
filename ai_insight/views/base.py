@@ -2,18 +2,17 @@ import requests
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-from github_integration.models import GitHubAccount  # Ensure you have this model
 
 # Create your views here.
 
 GITHUB_API_URL = "https://api.github.com/repos/{username}/{repo}/contents/"
 
 @login_required
-def workspace(request, username, repo):
-    return render(request, 'ai_codegen/workspace.html', { 'username': username, 'repo': repo })
+def insight(request, username, repo):
+    return render(request, 'ai_insight/insight.html', { 'username': username, 'repo': repo })
 
 @login_required
-def workspace_view(request, username, repo):
+def insight_view(request, username, repo):
     if not username or not repo:
         return JsonResponse({"error": "Missing username or repository name"}, status=400)
 

@@ -44,10 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'rest_framework',
     'accounts',
     'github_integration',
-    'ai_codegen',
+    'ai_insight',
 ]
 
 MIDDLEWARE = [
@@ -86,14 +85,6 @@ WSGI_APPLICATION = 'repomind.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'repogpt',
-        'USER': 'root',
-        'PASSWORD': 'root321',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-    },
-    'sqlite': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }

@@ -1,16 +1,16 @@
 from django.urls import path
 from .views import (
-    workspace, workspace_view,
+    insight, insight_view,
     get_raw_file_content,
     start_gemini_session, chat_with_gemini, end_gemini_session,
     set_last_active_file, get_last_active_file,
     get_file_chat_history, clear_chat_history
 )
 
-app_name = "ai_codegen"
+app_name = "ai_insight"
 urlpatterns = [
-    path("<str:username>/<str:repo>/", workspace, name="workspace"),
-    path("<str:username>/<str:repo>/view/", workspace_view, name="workspace_view"),
+    path("<str:username>/<str:repo>/", insight, name="insight"),
+    path("<str:username>/<str:repo>/view/", insight_view, name="insight_view"),
 
     path("get-raw-file-content/", get_raw_file_content, name="get_file"),
 

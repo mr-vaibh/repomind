@@ -22,6 +22,6 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
-    path('workspace/', include('ai_codegen.urls')),
+    path('insight/', include('ai_insight.urls')),
     path('', include('github_integration.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
