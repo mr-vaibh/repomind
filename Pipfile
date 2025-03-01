@@ -8,7 +8,6 @@ django = "*"
 requests = "*"
 gitpython = "*"
 python-dotenv = "*"
-djangorestframework = "*"
 mysqlclient = "*"
 google-genai = "*"
 
