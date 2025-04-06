@@ -77,11 +77,12 @@ def get_repositories(request, username):
     api_key = github_account.api_key
 
     headers = {"Authorization": f"Bearer {api_key}"}
-    response = requests.get("https://api.github.com/users/" + username + "/repos", headers=headers)
+    response = requests.get("https://api.github.com/users/" + username + "/repos?per_page=100", headers=headers)
 
     if response.status_code == 200:
         repos = response.json()
     else:
         repos = []
+    print(len(repos))
 
     return JsonResponse({"repos": repos, "github_user": username})

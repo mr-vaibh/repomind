@@ -50,11 +50,11 @@ $(document).ready(function () {
             folderTree.jstree("toggle_node", selectedNode); // Toggle folders
         } else {
             console.log("Selected file:", selectedNode.original.path);
-            loadFileSession(selectedNode.original.path, true);
+            loadFileHistory(selectedNode.original.path, true);
         }
     }
 
-    function loadFileSession(filePath, startAI = false) {
+    function loadFileHistory(filePath, startAI = false) {
         // **End previous session before loading new file**
         if (currentSessionId) endCurrentSession();
 
@@ -128,7 +128,7 @@ $(document).ready(function () {
     $("#learn-btn").click(function () {
         let currentFile = getCurrentFilePath();
         if (currentFile) {
-            loadFileSession(currentFile, true); // Re-analyze the file
+            loadFileHistory(currentFile, true); // Re-analyze the file
         } else {
             Notiflix.Notify.failure("No file selected.");
         }

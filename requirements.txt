@@ -1,0 +1,8 @@
+django
+requests
+gitpython
+python-dotenv
+google-genai
+gunicorn
+mysqlclient
+psycopg2

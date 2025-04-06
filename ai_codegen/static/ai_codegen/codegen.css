@@ -1,0 +1,5 @@
+.highlighted-node {
+    background-color: skyblue !important;
+    border-radius: 4px;
+    padding: 2px 4px;
+}

@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('insight/', include('ai_insight.urls')),
+    path('codegen/', include('ai_codegen.urls')),
     path('', include('github_integration.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -22,7 +22,7 @@ def login_user(request):
 
         if user is not None:
             login(request, user)
-            return redirect("home")
+            return redirect("github_integration:home")
         else:
             messages.error(request, "Invalid username or password.")
 

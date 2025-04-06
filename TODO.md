@@ -1,4 +1,5 @@
- - highlight active file bg to skyblue
- - FIX: 'Specified key was too long; max key length is 3072 bytes
  - update the `updated_at` in FileChat
  - multiple tabs
+ - multiline in prompt
+ - add code copy feature
+ - syntax highlighting

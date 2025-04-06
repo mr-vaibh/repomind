@@ -10,6 +10,7 @@ gitpython = "*"
 python-dotenv = "*"
 mysqlclient = "*"
 google-genai = "*"
+psycopg2 = "*"
 
 [dev-packages]
 

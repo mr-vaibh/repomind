@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RepoMind - Insight</title>
+    <title>RepoMind - Codegen</title>
 
     <!-- jQuery, TailwindCSS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -45,12 +45,8 @@
 
         <!-- Main Content (Chat Section) -->
         <div class="flex-1 p-6 flex flex-col bg-white shadow-xl">
-            <h2 class="text-2xl font-semibold mb-6 flex justify-between items-center">
-                <span id="file-name-heading">File: README.md</span>
+            <h2 class="text-2xl font-semibold mb-6 flex justify-end items-center">
                 <div id="chat-btns" class="flex hidden">
-                    <button id="learn-btn" class="text-md px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-600 transition">
-                        Learn
-                    </button>
                     <button id="clear-btn" class="ml-2 px-4 py-2 bg-red-700 text-white rounded shadow hover:bg-red-700 transition">
                         Clear
                     </button>
@@ -74,9 +70,9 @@
     </div>
 
     <!-- JavaScript Files -->
-    <script src="{% static 'ai_insight/insight-common.js' %}"></script>
-    <script src="{% static 'ai_insight/insight.js' %}"></script>
-    <script src="{% static 'ai_insight/insight-chat.js' %}"></script>
+    <script src="{% static 'ai_codegen/codegen-common.js' %}"></script>
+    <script src="{% static 'ai_codegen/codegen.js' %}"></script>
+    <script src="{% static 'ai_codegen/codegen-chat.js' %}"></script>
 
 </body>
 </html>
