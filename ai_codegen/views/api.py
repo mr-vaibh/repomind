@@ -55,7 +55,15 @@ def start_gemini_session(request):
 
     for i, batch in enumerate(file_batches):
         formatted_code = ""
+        skip_notes = ""
+
         for file in batch:
+            line_count = file["content"].count('\n')
+
+            if line_count > 1500:
+                skip_notes += f"**{file['path']} was very large, so skipped analyzing it. You can provide it in the chatbox manually.**\n\n"
+                continue
+
             formatted_code += f"// {file['path']}\n{file['content']}\n\n"
 
         prompt = f"""
@@ -69,12 +77,12 @@ Once you have full context, you’ll be asked questions about the entire project
 
 -------------
 {formatted_code}
+{skip_notes}
 -------------
 """
         response = chat.send_message(prompt)
-        print(response.text)  # Debugging output
+        print(response.text)
 
-        # Store session and associate it with the user's session
         session_id = request.session.session_key or request.session.create()
         active_chat_sessions[session_id] = chat
         request.session["active_gemini_session"] = session_id
