@@ -6,7 +6,14 @@ const repoName = window.location.pathname.split("/")[3];
 $("#repo-name").text(repoName);
 
 function appendMessage(sender, message) {
-    const messageClass = sender === "You" ? "bg-blue-100" : "bg-green-100";
+    let messageClass;
+
+    if (sender.toLowerCase() === "warning") {
+        messageClass = "bg-yellow-200";
+    } else {
+        messageClass = sender === "You" ? "bg-blue-100" : "bg-green-100";
+    }
+
     const formattedMessage = formatMessage(message);
 
     const messageElement = $(`

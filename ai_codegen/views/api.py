@@ -14,9 +14,17 @@ active_chat_sessions = {}
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 genai_client = genai.Client(api_key=GEMINI_API_KEY)
 
+def is_binary_content(content_bytes):
+    # If it has null bytes or a low ratio of printable characters, it's likely binary
+    if b'\x00' in content_bytes:
+        return True
+    text_threshold = 0.95  # 95% should be printable for it to be text
+    printable = sum(32 <= b <= 126 or b in (9, 10, 13) for b in content_bytes)
+    return (printable / len(content_bytes)) < text_threshold if content_bytes else False
+
+
 def fetch_github_files(username, repo, path=""):
     url = GITHUB_API_URL.format(username=username, repo=repo) + path
-    print(url)
     response = requests.get(url)
     if response.status_code != 200:
         print(f"Error fetching files: {response.status_code} - {response.text}")
@@ -26,12 +34,24 @@ def fetch_github_files(username, repo, path=""):
     files = []
 
     for item in contents:
+        file_path = item["path"]
         if item["type"] == "file":
-            file_content = requests.get(item["download_url"]).text
-            files.append({
-                "path": item["path"],
-                "content": file_content
-            })
+            try:
+                content_resp = requests.get(item["download_url"])
+                raw_bytes = content_resp.content
+
+                if is_binary_content(raw_bytes):
+                    print(f"Skipping binary file (detected): {file_path}")
+                    continue
+
+                decoded = raw_bytes.decode("utf-8", errors="replace")
+                files.append({
+                    "path": file_path,
+                    "content": decoded
+                })
+
+            except Exception as e:
+                print(f"Error fetching {file_path}: {e}")
         elif item["type"] == "dir":
             files += fetch_github_files(username, repo, item["path"])
 
@@ -55,13 +75,13 @@ def start_gemini_session(request):
 
     for i, batch in enumerate(file_batches):
         formatted_code = ""
-        skip_notes = ""
+        warning_texts = []
 
         for file in batch:
             line_count = file["content"].count('\n')
 
             if line_count > 1500:
-                skip_notes += f"**{file['path']} was very large, so skipped analyzing it. You can provide it in the chatbox manually.**\n\n"
+                warning_texts.append(f"**`{file['path']}` was very large, so skipped analyzing it. You can provide it in the chatbox manually.**\n\n")
                 continue
 
             formatted_code += f"// {file['path']}\n{file['content']}\n\n"
@@ -77,7 +97,6 @@ Once you have full context, you’ll be asked questions about the entire project
 
 -------------
 {formatted_code}
-{skip_notes}
 -------------
 """
         response = chat.send_message(prompt)
@@ -90,8 +109,9 @@ Once you have full context, you’ll be asked questions about the entire project
 
         # Ensure conversation entry exists
         RepoConversation.objects.get_or_create(username=username, repo_name=repo)
+    print(warning_texts)
 
-    return JsonResponse({ "message": "Gemini context loaded successfully!", "session_id": session_id })
+    return JsonResponse({ "message": "Gemini context loaded successfully!", "warning_texts": warning_texts, "session_id": session_id })
 
 
 @csrf_exempt

@@ -61,10 +61,8 @@ $(document).ready(function () {
             });
     }
     function loadChatHistory(conversation) {
-        chatbox.empty();
         conversation.forEach(msg => appendMessage(msg.sender, msg.message));
     }
-    loadRepoHistory()
 
     $("#clear-btn").click(function () {
         Notiflix.Confirm.show(
@@ -97,6 +95,13 @@ $(document).ready(function () {
         .done((res) => {
 
             currentSessionId = res.session_id; // Store session ID
+
+            if (res.warning_texts) {
+                res.warning_texts.forEach(warning => appendMessage("Warning", warning));
+                chatbox.append('<hr><br>')
+            }
+
+            loadRepoHistory();
 
             Notiflix.Notify.success(res.message);
             $('#chat-btns').removeClass("hidden");
