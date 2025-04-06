@@ -27,7 +27,6 @@ def fetch_github_files(username, repo, path=""):
     url = GITHUB_API_URL.format(username=username, repo=repo) + path
     response = requests.get(url)
     if response.status_code != 200:
-        print(f"Error fetching files: {response.status_code} - {response.text}")
         return []
 
     contents = response.json()
@@ -100,7 +99,6 @@ Once you have full context, you’ll be asked questions about the entire project
 -------------
 """
         response = chat.send_message(prompt)
-        print(response.text)
 
         session_id = request.session.session_key or request.session.create()
         active_chat_sessions[session_id] = chat
@@ -109,7 +107,6 @@ Once you have full context, you’ll be asked questions about the entire project
 
         # Ensure conversation entry exists
         RepoConversation.objects.get_or_create(username=username, repo_name=repo)
-    print(warning_texts)
 
     return JsonResponse({ "message": "Gemini context loaded successfully!", "warning_texts": warning_texts, "session_id": session_id })
 

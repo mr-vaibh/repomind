@@ -83,6 +83,5 @@ def get_repositories(request, username):
         repos = response.json()
     else:
         repos = []
-    print(len(repos))
 
     return JsonResponse({"repos": repos, "github_user": username})
