@@ -27,4 +27,22 @@ $(document).ready(function () {
             sendMessage();
         }
     });
+
+    $(document).on("click", ".copy-btn", function () {
+        const $btn = $(this);
+        const targetId = $btn.data("target");
+        const codeElement = document.getElementById(targetId);
+
+        if (codeElement) {
+            const codeText = codeElement.textContent;
+
+            navigator.clipboard.writeText(codeText).then(() => {
+                $btn.html('<i class="fas fa-check"></i> Copied').attr("title", "Copied!");
+
+                setTimeout(() => {
+                    $btn.html('<i class="fas fa-copy"></i> Copy').attr("title", "Copy");
+                }, 3000); // <-- 3 seconds delay
+            });
+        }
+    });
 });
