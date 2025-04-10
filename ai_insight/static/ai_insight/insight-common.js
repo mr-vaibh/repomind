@@ -30,7 +30,7 @@ function formatMessage(message) {
                 <button class="copy-btn absolute top-1 right-1 opacity-0 group-hover:opacity-100 bg-gray-700 text-white px-2 py-1 rounded" data-target="${codeId}" title="Copy">
                     <i class="fas fa-copy"></i> Copy
                 </button>
-                <pre class="bg-gray-800 text-white p-2 rounded overflow-x-auto"><code id="${codeId}" class="language-${lang}">${escapedCode}</code></pre>
+                <pre class="bg-gray-800 text-white p-2 rounded overflow-x-scroll"><code id="${codeId}" class="language-${lang}">${escapedCode}</code></pre>
             </div>
         `;
     });
