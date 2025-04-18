@@ -3,3 +3,4 @@
  - multiline in prompt
  - add code copy feature
  - syntax highlighting
+ - `private` repos not fetching, use github API
