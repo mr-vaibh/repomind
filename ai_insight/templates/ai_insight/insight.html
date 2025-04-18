@@ -2,81 +2,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RepoMind - Insight</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RepoMind - Insight</title>
 
-    <!-- jQuery, TailwindCSS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css">
-
-    <!-- JSTree -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.17/jstree.min.js"></script>
-
-    <!-- Prism -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-
-    <!-- Notiflix -->
-    <script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.8/dist/notiflix-aio-3.2.8.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notiflix@3.2.8/src/notiflix.min.css">
+  <!-- Dependencies -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.17/jstree.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.8/dist/notiflix-aio-3.2.8.min.js"></script>
 </head>
-<body class="bg-gray-100 text-gray-800">
 
-    <div class="flex h-screen">
-        <!-- Sidebar (Folder Structure) -->
-        <div class="w-1/4 repo-sidebar bg-white p-6 shadow-lg">
-            <div class="flex items-center mb-6">
-                <!-- Back Button -->
-                <a href="javascript:history.back()" class="text-gray-600 hover:text-gray-800 mr-4">
-                    <i class="fas fa-arrow-left fa-lg"></i>
-                </a>
-                <h2 class="text-xl font-bold" id="repo-name">Repository Files</h2>
-            </div>
-            <!-- Folder Tree -->
-            <div id="folder-tree" class="overflow-y-auto h-[calc(100vh-150px)]">
-                <!-- Dynamic folder structure will be injected here -->
-            </div>
+<body class="bg-gray-100 text-gray-900 font-sans">
+
+  <div class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-1/6 bg-white shadow-lg flex flex-col">
+      <div class="p-5 border-b border-gray-200 flex items-center">
+        <a href="javascript:history.back()" class="text-gray-500 hover:text-gray-700 transition">
+          <i class="fas fa-arrow-left fa-lg"></i>
+        </a>
+        <h2 class="ml-3 text-lg font-semibold">Files</h2>
+      </div>
+      <div id="folder-tree" class="p-4 overflow-y-auto flex-grow text-sm text-gray-700">
+        <!-- Tree gets injected -->
+      </div>
+    </aside>
+
+    <!-- Main Section -->
+    <main class="flex-1 flex flex-col bg-gray-50 overflow-hidden relative">
+
+      <!-- Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b bg-white shadow-sm">
+        <div>
+          <h1 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
+            <i class="fas fa-file-code text-blue-500"></i>
+            <span id="file-name-heading">README.md</span>
+          </h1>
+          <p class="text-sm text-gray-500 mt-1">Context fully loaded <span class="ml-1 text-green-500">●</span></p>
         </div>
-
-        <!-- Main Content (Chat Section) -->
-        <div class="flex-1 p-6 flex flex-col bg-white shadow-xl overflow-x-scroll">
-            <h2 class="text-2xl font-semibold mb-6 flex justify-between items-center">
-                <span id="file-name-heading">File: README.md</span>
-                <div id="chat-btns" class="flex hidden">
-                    <button id="learn-btn" class="text-md px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-600 transition">
-                        Learn
-                    </button>
-                    <button id="clear-btn" class="ml-2 px-4 py-2 bg-red-700 text-white rounded shadow hover:bg-red-700 transition">
-                        Clear
-                    </button>
-                </div>
-            </h2>
-
-            <!-- Chatbox -->
-            <div id="chatbox" class="flex-1 p-4 bg-white shadow rounded-lg overflow-y-auto">
-                <p class="text-gray-400 text-center">Start a conversation...</p>
-            </div>
-
-            <!-- Input and Submit Button -->
-            <div class="mt-4 flex">
-                <input id="chat-input" type="text" placeholder="Ask AI something..." 
-                    class="flex-1 p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
-                <button id="send-btn" class="ml-3 px-5 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition">
-                    Send
-                </button>
-            </div>
+        <div id="chat-btns" class="hidden flex space-x-2">
+          <button id="learn-btn" class="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition text-sm">
+            <i class="fas fa-brain"></i> Learn
+          </button>
+          <button id="clear-btn" class="flex items-center gap-2 px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition text-sm">
+            <i class="fas fa-trash-alt"></i> Clear
+          </button>
         </div>
-    </div>
+      </div>
 
-    <!-- JavaScript Files -->
-    <script src="{% static 'ai_insight/insight-common.js' %}"></script>
-    <script src="{% static 'ai_insight/insight.js' %}"></script>
-    <script src="{% static 'ai_insight/insight-chat.js' %}"></script>
+      <!-- Chat Window -->
+      <div id="chatbox" class="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+        <!-- No File Selected / Empty State -->
+        <div class="flex flex-col justify-center items-center space-y-4 text-center text-gray-600">
+            <i class="fas fa-file-code text-4xl text-gray-300"></i>
+            <h2 class="text-lg font-semibold">No file selected</h2>
+            <p class="text-sm">Please select a file from the sidebar to start a conversation with AI. Once a file is loaded, I’ll be able to assist you with context and analysis!</p>
 
+            <button
+                id="select-file-btn"
+                class="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition text-sm mt-4"
+            >
+                <i class="fas fa-folder-open mr-2"></i> Select a file
+            </button>
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="px-6 py-4 border-t bg-white shadow-inner sticky bottom-0 flex items-center">
+        <input
+          id="chat-input"
+          type="text"
+          placeholder="Ask anything about the code..."
+          class="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-gray-800"
+        />
+        <button
+          id="send-btn"
+          class="ml-3 px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition text-sm flex items-center gap-2 shadow"
+        >
+          <i class="fas fa-paper-plane"></i> Send
+        </button>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="{% static 'ai_insight/insight-common.js' %}"></script>
+  <script src="{% static 'ai_insight/insight.js' %}"></script>
+  <script src="{% static 'ai_insight/insight-chat.js' %}"></script>
 </body>
 </html>

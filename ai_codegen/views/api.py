@@ -80,7 +80,7 @@ def start_gemini_session(request):
             line_count = file["content"].count('\n')
 
             if line_count > 1500:
-                warning_texts.append(f"**`{file['path']}` was very large, so skipped analyzing it. You can provide it in the chatbox manually.**\n\n")
+                warning_texts.append(f"`{file['path']}` was very large, so skipped analyzing it. You can provide it in the chatbox manually.")
                 continue
 
             formatted_code += f"// {file['path']}\n{file['content']}\n\n"

@@ -85,29 +85,54 @@ $(document).ready(function () {
     }
 
     function startGeminiSession(filePath, fileContent, hasChatHistory) {
-        // Disable input and show "Generating response..."
-        $("#chat-input").prop("disabled", true).attr("placeholder", "Generating response...");
-        $("#send-btn").prop("disabled", true).text("...");
-        // Show Notiflix loader
-        Notiflix.Loading.standard("Starting AI session...");
+        // Disable input
+        const chatInput = $("#chat-input");
+        const sendBtn = $("#send-btn");
+
+        chatInput.prop("disabled", true).attr("placeholder", "Analyzing file...");
+        sendBtn.prop("disabled", true).html(`<i class="fas fa-spinner fa-spin"></i> Analyzing...`);
+
+        // TODO: this does not work
+        $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+
+        // Show loader bubble in chatbox
+        chatbox.empty().append(`
+            <div id="loading-overlay" class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div class="bg-white bg-opacity-80 rounded-lg px-6 py-4 shadow-lg flex flex-col items-center gap-3">
+                <div class="w-8 h-8 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+                <p class="text-gray-700 text-sm font-medium animate-pulse">RepoMind is reading your code...</p>
+                </div>
+            </div>    
+        `);
 
         $.post("/insight/start-gemini-session/", { username, repoName, filePath, fileContent })
             .done(response => {
-                if (!response.success) return alert("Error starting AI session: " + response.error);
+                if (!response.success) {
+                    alert("Error starting AI session: " + response.error);
+                    return;
+                }
 
-                currentSessionId = response.session_id; // Store session ID
+                chatbox.empty(); // Clear loading overlay
 
-                // Only show AI message if no previous chat exists
+                currentSessionId = response.session_id;
+
                 if (!hasChatHistory) {
-                    chatbox.append(`<p class="text-green-600 font-bold">AI is analyzing <strong>${filePath}</strong>. You can now ask questions.</p>`);
+                    $("#ai-loader").remove();
+                    chatbox.append(`
+                        <div class="bg-blue-100 text-gray-800 max-w-3xl p-4 rounded-lg shadow-md">
+                            <p class="text-sm">Hi! I’ve loaded the full file context. Ask me about this file or the repo!</p>
+                        </div>
+                    `);
                 }
             })
-            .fail(() => alert("Error: Failed to start AI session."))
+            .fail(() => {
+                alert("Error: Failed to start AI session.");
+            })
             .always(() => {
-                // Re-enable input and button after response
-                $("#chat-input").prop("disabled", false).attr("placeholder", "Ask AI something...");
-                $("#send-btn").prop("disabled", false).text("Send");
-                Notiflix.Loading.remove();
+                // Re-enable input
+                chatInput.prop("disabled", false).attr("placeholder", "Ask AI something...");
+                sendBtn.prop("disabled", false).html(`<i class="fas fa-paper-plane"></i> Send`);
+                $("#ai-loader").remove(); // Just in case
             });
     }
 

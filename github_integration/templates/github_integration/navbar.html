@@ -1,18 +1,22 @@
 <!-- Navbar -->
-<nav class="bg-gray-800 shadow-lg">
-    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-        <!-- Left Section: Logo and Links -->
-        <div class="flex items-center space-x-6">
-            <a href="#" class="text-3xl font-extrabold text-white hover:text-gray-300 transition duration-300">RepoMind</a>
-            <a href="{% url 'github_integration:home' %}" class="text-lg text-gray-300 hover:text-white transition duration-300">Home</a>
+<nav class="bg-white shadow-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <!-- Left Section: Logo and Navigation -->
+        <div class="flex items-center gap-8">
+            <a href="#" class="text-2xl font-bold text-gray-800 hover:text-blue-600 transition">RepoMind</a>
+            <a href="{% url 'github_integration:home' %}" class="text-gray-600 hover:text-blue-600 transition text-sm font-medium">Home</a>
         </div>
 
-        <!-- Right Section: User Avatar and Logout -->
-        <div class="flex items-center space-x-6">
-            <span class="text-white font-semibold text-lg">{{ request.user }}</span>
-            <img id="user-avatar" src="https://avatar.iran.liara.run/public/boy?username={{ request.user }}" alt="Profile" class="rounded-full w-12 h-12 border-2 border-gray-300">
+        <!-- Right Section: User Info -->
+        <div class="flex items-center gap-4">
+            <span class="text-gray-700 text-sm font-medium hidden sm:block">{{ request.user }}</span>
+            <img src="https://avatar.iran.liara.run/public/boy?username={{ request.user }}" 
+                 alt="Avatar" 
+                 class="w-10 h-10 rounded-full border-2 border-gray-300 shadow-sm">
             <a href="{% url 'accounts:logout' %}">
-                <button id="logout" class="px-6 py-2 bg-red-600 text-white rounded-full shadow-md hover:bg-red-700 transition duration-300">Logout</button>
+                <button class="bg-red-500 hover:bg-red-600 transition text-white px-4 py-1.5 rounded-full text-sm shadow">
+                    Logout
+                </button>
             </a>
         </div>
     </div>

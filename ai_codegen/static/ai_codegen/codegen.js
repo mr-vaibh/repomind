@@ -89,21 +89,25 @@ $(document).ready(function () {
         );
     });
 
+    // Disable input & show loader on send button
+    $("#chat-input").prop("disabled", true);
+    $("#send-btn").html('<i class="fas fa-spinner fa-spin"></i> Analyzing...').prop("disabled", true);
+
     // Automatically start Gemini context build on load
-    Notiflix.Loading.standard('Analyzing repository...');
     $.post("/codegen/start-gemini-session/", { username, repoName })
         .done((res) => {
+            $("#chatbox").empty();
 
-            currentSessionId = res.session_id; // Store session ID
+            currentSessionId = res.session_id;
 
             if (res.warning_texts) {
-                res.warning_texts.forEach(warning => appendMessage("Warning", warning));
-                chatbox.append('<hr><br>')
+                res.warning_texts.forEach(warning =>
+                    Notiflix.Notify.warning(warning, { clickToClose: true, timeout: 7000 })
+                );
             }
 
             loadRepoHistory();
 
-            Notiflix.Notify.success(res.message);
             $('#chat-btns').removeClass("hidden");
         })
         .fail(() => {
@@ -111,7 +115,10 @@ $(document).ready(function () {
         })
         .always(() => {
             Notiflix.Loading.remove();
+            $("#chat-input").prop("disabled", false);
+            $("#send-btn").html('<i class="fas fa-paper-plane"></i> Send').prop("disabled", false);
         });
+
 
     function endCurrentSession() {
         $.post("/insight/end-gemini-session/", { session_id: currentSessionId })
