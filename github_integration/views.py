@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import GitHubAccount
 from .forms import GitHubAccountForm
 
-@login_required(login_url="/admin/login/")
+@login_required
 def home(request):
     return render(request, 'github_integration/home.html')
 
