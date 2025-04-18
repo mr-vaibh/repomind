@@ -46,20 +46,18 @@ $(document).ready(function () {
     }
     loadApiKeys();
 
-    // Show/Hide API Key
+    // Show API Key in modal
     $(document).on("click", ".toggle-key", function () {
-        let id = $(this).data("id");
-        let hiddenKey = $(`.hidden-key[data-id="${id}"]`);
-        let fullKey = $(`.full-key[data-id="${id}"]`);
-        if (hiddenKey.is(":visible")) {
-            hiddenKey.hide();
-            fullKey.show();
-            $(this).text("Hide");
-        } else {
-            hiddenKey.show();
-            fullKey.hide();
-            $(this).text("Show");
-        }
+        const id = $(this).data("id");
+        const key = $(`.full-key[data-id="${id}"]`).text();
+
+        $("#view-key-text").text(key);
+        $("#view-key-modal").removeClass("hidden");
+    });
+
+    // Close View Key Modal
+    $("#close-view-key-modal").click(() => {
+        $("#view-key-modal").addClass("hidden");
     });
 
     // Add API Key
@@ -70,13 +68,13 @@ $(document).ready(function () {
             username: $("#github-username").val(),
             api_key: $("#github-api-key").val()
         })
-        .done(function () {
-            loadApiKeys();
-            $("#modal").addClass("hidden");
-        })
-        .fail(function (xhr) {
-            alert("Error adding API key: " + (xhr.responseJSON?.error || "Something went wrong."));
-        });
+            .done(function () {
+                loadApiKeys();
+                $("#modal").addClass("hidden");
+            })
+            .fail(function (xhr) {
+                alert("Error adding API key: " + (xhr.responseJSON?.error || "Something went wrong."));
+            });
     });
 
     // Delete API Key
@@ -86,12 +84,12 @@ $(document).ready(function () {
             csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
             id: id
         })
-        .done(function () {
-            $(`#row-${id}`).fadeOut();
-        })
-        .fail(function (xhr) {
-            alert("Error deleting API key: " + (xhr.responseJSON?.error || "Something went wrong."));
-        });
+            .done(function () {
+                $(`#row-${id}`).fadeOut();
+            })
+            .fail(function (xhr) {
+                alert("Error deleting API key: " + (xhr.responseJSON?.error || "Something went wrong."));
+            });
     });
 
     // Open & Close Modal
