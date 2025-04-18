@@ -12,7 +12,7 @@ $(document).ready(function () {
                 console.log(data);
 
                 allRepos = data?.repos || []; // Store all repositories
-                
+
                 // Initially display all repositories
                 filteredRepos = allRepos;
                 displayRepositories(filteredRepos);
@@ -28,19 +28,26 @@ $(document).ready(function () {
         let reposHTML = "";
 
         repositories.forEach(repo => {
+            const description = repo.description || "No description available";
+            const trimmedDescription = description.length > 100
+                ? description.slice(0, 97) + "..."
+                : description;
+
             reposHTML += `
                 <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition cursor-pointer border border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-800 truncate">${repo.name}</h3>
-                    <p class="text-sm text-gray-600 mt-2">${repo.description || "No description available"}</p>
+                    <h3 class="text-lg font-semibold text-gray-800 truncate">
+                    <a href="${repo.html_url}" target="_blank" class="text-blue-700">${repo.name}</a>
+                    </h3>
+                    <p class="text-sm text-gray-600 mt-2">${trimmedDescription}</p>
                     <div class="mt-3 flex justify-between items-center">
                         <span class="text-xs text-gray-500">${new Date(repo.updated_at).toLocaleDateString()}</span>
                         <div>
-                            <a href="/insight/${apiUser}/${repo.name}/" class="inline-block">
+                            <a href="/insight/${apiUser}/${repo.name}/" class="inline-block text-xs">
                                 <button class="bg-blue-600 text-white px-3 py-1 rounded-lg shadow-md hover:bg-blue-700 transition">
                                     Insight
                                 </button>
                             </a>
-                            <a href="/codegen/${apiUser}/${repo.name}/" class="inline-block">
+                            <a href="/codegen/${apiUser}/${repo.name}/" class="inline-block text-xs">
                                 <button class="bg-blue-600 text-white px-3 py-1 rounded-lg shadow-md hover:bg-blue-700 transition">
                                     Codegen
                                 </button>
@@ -60,7 +67,7 @@ $(document).ready(function () {
         let searchQuery = $(this).val().toLowerCase();
 
         // Filter repositories based on search query
-        filteredRepos = allRepos.filter(repo => 
+        filteredRepos = allRepos.filter(repo =>
             repo.name.toLowerCase().includes(searchQuery)
         );
 
