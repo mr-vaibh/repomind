@@ -72,7 +72,7 @@ $(document).ready(function () {
 
                         if (startAI) {
                             let combinedContent = `This is the file content:\n${fileContent}\n\nPrevious chat history:\n${chatHistory.map(msg => msg.sender + ": " + msg.message).join("\n")}`;
-                            startGeminiSession(filePath, combinedContent, chatHistory.length > 0);
+                            startGeminiSession(filePath, combinedContent, chatHistory);
                         }
                     });
 
@@ -84,7 +84,7 @@ $(document).ready(function () {
             .fail(() => alert("Error: Could not load file content."));
     }
 
-    function startGeminiSession(filePath, fileContent, hasChatHistory) {
+    function startGeminiSession(filePath, fileContent, chatHistory) {
         // Disable input
         const chatInput = $("#chat-input");
         const sendBtn = $("#send-btn");
@@ -113,10 +113,11 @@ $(document).ready(function () {
                 }
 
                 chatbox.empty(); // Clear loading overlay
+                loadChatHistory(chatHistory); // Load chat history
 
                 currentSessionId = response.session_id;
 
-                if (!hasChatHistory) {
+                if (chatHistory.length <= 0) {
                     $("#ai-loader").remove();
                     chatbox.append(`
                         <div class="bg-blue-100 text-gray-800 max-w-3xl p-4 rounded-lg shadow-md">
